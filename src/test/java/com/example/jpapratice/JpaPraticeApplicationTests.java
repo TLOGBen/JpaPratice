@@ -3,6 +3,7 @@ package com.example.jpapratice;
 import com.example.jpapratice.dao.ICustomerDao;
 import com.example.jpapratice.dao.custom.ICustomerCustomDao;
 import com.example.jpapratice.dao.entity.Customer;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,14 +20,15 @@ class JpaPraticeApplicationTests {
     ICustomerCustomDao customerCustomDao;
 
     @Test
-    void test() {
+    void jpaRepositoriesDefaultMethodTest() {
         customerDao.save(new Customer());
         List<Customer> customers = customerDao.findAll();
-        System.out.println(customers);
+
+        Assertions.assertThat(customers.isEmpty()).isFalse();
     }
 
     @Test
-    void test2() {
+    void customMethodTest() {
         Customer customer = new Customer();
         customer.setName("FFF");
         customer.setRocId("F123");
@@ -35,6 +37,6 @@ class JpaPraticeApplicationTests {
         // 註 : 由於如果impl直接對著customerDao實作, 就必須覆蓋掉JPARepository的所有內容,
         // 因此在官網說明中寫道: 若是需要Custom method, 就必須開另一個interface
         List<Customer> customers = customerCustomDao.queryCustomerByNameList(Collections.singletonList("FFF"));
-        System.out.println(customers);
+        Assertions.assertThat(customers.isEmpty()).isFalse();
     }
 }
