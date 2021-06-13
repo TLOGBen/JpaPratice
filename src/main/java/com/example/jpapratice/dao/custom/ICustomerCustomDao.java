@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface ICustomerCustomDao {
     List<Customer> queryCustomerByNameList(List<String> nameList);
+
+    List<Customer> hibernateQueryCustomerByNameList(List<String> nameList);
+
+    List<Customer> QueryByCriteria();
 }

@@ -9,6 +9,8 @@ public class Customer {
     @GeneratedValue
     private Long id;
     private String name;
+    
+    @Column(name = "ROC_ID")
     private String rocId;
 
     public Long getId() {
