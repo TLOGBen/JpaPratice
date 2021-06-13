@@ -68,7 +68,7 @@ class JpaPraticeApplicationTests {
     void CriteriaQueryTest() {
         customerService.initCustomerData();
         // 使用Revamp Backend一樣的方式回傳List<Map>
-        List<Customer> customers = customerCustomDao.QueryByCriteria();
+        List<Customer> customers = customerCustomDao.queryByCriteria();
 
         Assertions.assertThat(customers.isEmpty()).isFalse();
     }

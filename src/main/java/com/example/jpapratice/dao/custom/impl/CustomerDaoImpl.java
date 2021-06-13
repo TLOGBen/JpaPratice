@@ -63,7 +63,7 @@ public class CustomerDaoImpl implements ICustomerCustomDao {
     }
 
     @Override
-    public List<Customer> QueryByCriteria() {
+    public List<Customer> queryByCriteria() {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Customer> criteria = builder.createQuery(Customer.class);
 
