@@ -3,6 +3,7 @@ package com.example.jpapratice;
 import com.example.jpapratice.dao.ICustomerDao;
 import com.example.jpapratice.dao.custom.ICustomerCustomDao;
 import com.example.jpapratice.dao.entity.Customer;
+import com.example.jpapratice.service.ICustomerService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ class JpaPraticeApplicationTests {
 
     @Autowired
     ICustomerCustomDao customerCustomDao;
+
+    @Autowired
+    ICustomerService customerService;
 
     @Test
     void jpaRepositoriesDefaultMethodTest() {
@@ -39,4 +43,20 @@ class JpaPraticeApplicationTests {
         List<Customer> customers = customerCustomDao.queryCustomerByNameList(Collections.singletonList("FFF"));
         Assertions.assertThat(customers.isEmpty()).isFalse();
     }
+
+    @Test
+    void EntityTransactionTest() {
+        Customer customer = new Customer();
+        customer.setName("FFF");
+        customer.setRocId("F123");
+        customerDao.save(customer);
+
+        // transaction 對entity的任何變動都會影響到DB
+        customerService.queryInTrancation(customer);
+
+        Customer customerTest;
+        customerTest = customerDao.findById(customer.getId()).get();
+        Assertions.assertThat(customerTest.getName()).isEqualTo("FFF");
+    }
+
 }
