@@ -42,6 +42,9 @@ class JpaPraticeApplicationTests {
         Assertions.assertThat(customers.isEmpty()).isFalse();
     }
 
+    /**
+     * Transaction + Entity 會需要注意的特性(1)
+     */
     @Test
     void EntityTransactionTest() {
         customerService.initCustomerData();
@@ -55,19 +58,23 @@ class JpaPraticeApplicationTests {
         Assertions.assertThat(customerTest.getName()).isEqualTo("FFF");
     }
 
+    /**
+     * Hibernate.query 與mapping測試
+     */
     @Test
     void HibernateQueryTest() {
         customerService.initCustomerData();
-        // 使用Revamp Backend一樣的方式回傳List<Map>
         List<Customer> customers = customerCustomDao.hibernateQueryCustomerByNameList(Collections.singletonList("FFF"));
 
         Assertions.assertThat(customers.isEmpty()).isFalse();
     }
 
+    /**
+     * Criteria使用測試
+     */
     @Test
     void CriteriaQueryTest() {
         customerService.initCustomerData();
-        // 使用Revamp Backend一樣的方式回傳List<Map>
         List<Customer> customers = customerCustomDao.queryByCriteria();
 
         Assertions.assertThat(customers.isEmpty()).isFalse();
