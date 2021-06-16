@@ -42,6 +42,14 @@ class JpaPraticeApplicationTests {
         Assertions.assertThat(customers.isEmpty()).isFalse();
     }
 
+    @Test
+    void methodNameQueryTest() {
+        customerService.initCustomerData();
+        // 用Method Name查詢 等同於-- Query Customer By Name like "%?%"
+        List<Customer> customers = customerDao.queryCustomerByNameIsLike("FFF");
+        Assertions.assertThat(customers.isEmpty()).isFalse();
+    }
+
     /**
      * Transaction + Entity 會需要注意的特性(1)
      */

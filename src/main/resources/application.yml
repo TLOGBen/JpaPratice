@@ -11,3 +11,9 @@ spring:
     password:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+
+logging.level.org.hibernate:
+  SQL: debug
+  type: TRACE
+  type.descriptor:
+    sql: trace
