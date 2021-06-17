@@ -1,13 +1,16 @@
 package com.example.jpapratice.service.impl;
 
 import com.example.jpapratice.dao.ICustomerDao;
+import com.example.jpapratice.dao.IPhoneDao;
 import com.example.jpapratice.dao.entity.Customer;
+import com.example.jpapratice.dao.entity.Phone;
 import com.example.jpapratice.service.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.example.jpapratice.utils.RandomUtils.randomString;
@@ -16,6 +19,8 @@ import static com.example.jpapratice.utils.RandomUtils.randomString;
 public class CustomerServiceImpl implements ICustomerService {
     @Autowired
     ICustomerDao customerDao;
+    @Autowired
+    IPhoneDao phoneDao;
 
     @Override
     @Transactional
@@ -25,10 +30,17 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
+    @Transactional
     public void initCustomerData() {
         Customer customer = new Customer();
         customer.setName("FFF");
         customer.setRocId("123");
+
+        Phone phone = new Phone();
+        phone.setMsisdn("0911111111");
+        phone.setCustomer(customer);
+
+        customer.setPhones(Collections.singleton(phone));
 
         List<Customer> customers = new ArrayList<>();
         customers.add(customer);

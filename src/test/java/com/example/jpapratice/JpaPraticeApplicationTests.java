@@ -8,7 +8,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,7 +53,7 @@ class JpaPraticeApplicationTests {
      * Transaction + Entity 會需要注意的特性(1)
      */
     @Test
-    void EntityTransactionTest() {
+    void entityTransactionTest() {
         customerService.initCustomerData();
 
         Customer customer = customerDao.findAll().get(0);
@@ -67,7 +69,7 @@ class JpaPraticeApplicationTests {
      * Hibernate.query 與mapping測試
      */
     @Test
-    void HibernateMapQueryTest() {
+    void hibernateMapQueryTest() {
         customerService.initCustomerData();
         List<Customer> customers = customerCustomDao.hibernateQueryCustomerByNameList(Collections.singletonList("FFF"));
 
@@ -78,9 +80,26 @@ class JpaPraticeApplicationTests {
      * Criteria使用測試
      */
     @Test
-    void CriteriaQueryTest() {
+    void criteriaQueryTest() {
         customerService.initCustomerData();
         List<Customer> customers = customerCustomDao.queryByCriteria();
+
+        Assertions.assertThat(customers.isEmpty()).isFalse();
+    }
+
+    /**
+     * query By Example使用測試
+     */
+    @Test
+    @Transactional
+    void queryByExampleTest() {
+        customerService.initCustomerData();
+
+        Customer example = new Customer();
+        example.setName("FFF");
+
+        Example<Customer> customerExample = Example.of(example);
+        List<Customer> customers = customerDao.findAll(customerExample);
 
         Assertions.assertThat(customers.isEmpty()).isFalse();
     }
