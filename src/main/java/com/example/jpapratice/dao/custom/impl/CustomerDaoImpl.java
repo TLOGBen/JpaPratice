@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class CustomerDaoImpl implements ICustomerCustomDao {
     public List<Customer> hibernateQueryCustomerByNameList(List<String> nameList) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("SELECT NAME, ROC_ID FROM CUSTOMER WHERE NAME IN (:name)");
+        sb.append("SELECT * FROM CUSTOMER WHERE NAME IN (:name)");
 
         // 現在最新版是hibernate 5.4.32, 底下的兩個deprecated會在6.0才會有替代方案, 現在只能忽略它><
         org.hibernate.Query query = em.createNativeQuery(sb.toString()).unwrap(org.hibernate.Query.class);
@@ -45,16 +46,16 @@ public class CustomerDaoImpl implements ICustomerCustomDao {
 
         // 返回 List<Map>
         query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-        List<Map<String, String>> results = query.getResultList();
+        List<Map<String, ?>> results = query.getResultList();
 
         // 手動轉換結果
         List<Customer> customerList = new ArrayList<>();
         if (results != null && !results.isEmpty()) {
-            for (Map<String, String> resultObjMap : results) {
+            for (Map<String, ?> resultObjMap : results) {
                 Customer tmpCustomer = new Customer();
-
-                tmpCustomer.setName(resultObjMap.getOrDefault("NAME", null));
-                tmpCustomer.setRocId(resultObjMap.getOrDefault("ROC_ID", null));
+                tmpCustomer.setId(((BigInteger) resultObjMap.getOrDefault("ID", null)).longValue());
+                tmpCustomer.setName(resultObjMap.getOrDefault("NAME", null).toString());
+                tmpCustomer.setRocId(resultObjMap.getOrDefault("ROC_ID", null).toString());
                 customerList.add(tmpCustomer);
             }
         }

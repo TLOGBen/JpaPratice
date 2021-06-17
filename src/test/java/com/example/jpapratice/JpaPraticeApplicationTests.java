@@ -26,16 +26,13 @@ class JpaPraticeApplicationTests {
     @Test
     void jpaRepositoriesDefaultMethodTest() {
         customerService.initCustomerData();
-
         List<Customer> customers = customerDao.findAll();
-
         Assertions.assertThat(customers.isEmpty()).isFalse();
     }
 
     @Test
     void customMethodTest() {
         customerService.initCustomerData();
-
         // 註 : 由於如果impl直接對著customerDao實作, 就必須覆蓋掉JPARepository的所有內容,
         // 因此在官網說明中寫道: 若是需要Custom method, 就必須開另一個interface
         List<Customer> customers = customerCustomDao.queryCustomerByNameList(Collections.singletonList("FFF"));
@@ -62,7 +59,7 @@ class JpaPraticeApplicationTests {
         // transaction 對entity的任何變動都會影響到DB
         customerService.queryInTrancation(customer);
 
-        Customer customerTest = customerDao.findById(customer.getId()).get();
+        Customer customerTest = customerDao.findById(customer.getId()).orElse(new Customer());
         Assertions.assertThat(customerTest.getName()).isEqualTo("FFF");
     }
 
@@ -70,7 +67,7 @@ class JpaPraticeApplicationTests {
      * Hibernate.query 與mapping測試
      */
     @Test
-    void HibernateQueryTest() {
+    void HibernateMapQueryTest() {
         customerService.initCustomerData();
         List<Customer> customers = customerCustomDao.hibernateQueryCustomerByNameList(Collections.singletonList("FFF"));
 
