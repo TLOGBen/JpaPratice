@@ -85,7 +85,7 @@ public class CustomerDaoImpl implements ICustomerCustomDao {
         criteria.select(root);
         ParameterExpression<String> namePara = builder.parameter(String.class);
         // SELECT * FROM Customer Where NAME = "FFF"
-        criteria.select(root).where(builder.like(root.get("name"),namePara));
+        criteria.select(root).where(builder.like(root.get("name"), namePara));
 
         TypedQuery<Customer> q = em.createQuery(criteria);
         q.setParameter(namePara, "FFF");
