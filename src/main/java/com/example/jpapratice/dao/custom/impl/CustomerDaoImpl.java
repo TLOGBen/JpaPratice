@@ -3,7 +3,6 @@ package com.example.jpapratice.dao.custom.impl;
 import com.example.jpapratice.dao.custom.ICustomerCustomDao;
 import com.example.jpapratice.dao.entity.Customer;
 import org.hibernate.transform.Transformers;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
