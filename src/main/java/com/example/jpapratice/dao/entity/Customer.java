@@ -13,7 +13,7 @@ public class Customer {
     @Column(name = "ROC_ID")
     private String rocId;
 
-    @OneToMany(mappedBy = "CUSTOMER", fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<Phone> phones;
 

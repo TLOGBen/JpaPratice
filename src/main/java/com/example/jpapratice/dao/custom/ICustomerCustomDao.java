@@ -10,4 +10,6 @@ public interface ICustomerCustomDao {
     List<Customer> hibernateQueryCustomerByNameList(List<String> nameList);
 
     List<Customer> queryByCriteria();
+
+    List<Customer> queryUserByUserNameWithCriteria();
 }

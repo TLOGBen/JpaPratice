@@ -80,9 +80,22 @@ class JpaPraticeApplicationTests {
      * Criteria使用測試
      */
     @Test
+    @Transactional
     void criteriaQueryTest() {
         customerService.initCustomerData();
         List<Customer> customers = customerCustomDao.queryByCriteria();
+
+        Assertions.assertThat(customers.isEmpty()).isFalse();
+    }
+
+    /**
+     * Criteria使用測試2
+     */
+    @Test
+    @Transactional
+    void criteriaQueryTest2() {
+        customerService.initCustomerData();
+        List<Customer> customers = customerCustomDao.queryUserByUserNameWithCriteria();
 
         Assertions.assertThat(customers.isEmpty()).isFalse();
     }

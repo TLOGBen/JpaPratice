@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -71,6 +72,23 @@ public class CustomerDaoImpl implements ICustomerCustomDao {
         Root<Customer> root = criteria.from(Customer.class);
         criteria.select(root);
         TypedQuery<Customer> q = em.createQuery(criteria);
+
+        return q.getResultList();
+    }
+
+    @Override
+    public List<Customer> queryUserByUserNameWithCriteria() {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Customer> criteria = builder.createQuery(Customer.class);
+
+        Root<Customer> root = criteria.from(Customer.class);
+        criteria.select(root);
+        ParameterExpression<String> namePara = builder.parameter(String.class);
+        // SELECT * FROM Customer Where NAME = "FFF"
+        criteria.select(root).where(builder.like(root.get("name"),namePara));
+
+        TypedQuery<Customer> q = em.createQuery(criteria);
+        q.setParameter(namePara, "FFF");
 
         return q.getResultList();
     }
